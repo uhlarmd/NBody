@@ -1,46 +1,47 @@
+require_relative 'bank_account.rb'
 class User
-	
 	attr_accessor :name, :pin, :balance
-
-	def initialize(name, pin, balance, login = 0)
+	def initialize(name, pin, login = 0)
 		@name = name
 		@pin = pin
-		@balance = balance
-		@login == 0
+		@login = 0
 	end
 
 	def login
-		puts "Please input your pin:"
-		pin = gets
-		if pin = @pin
-			puts "Hello #{name}, you have a balance of #{balance} dollars"
+		pin = gets.to_i
+		if pin == @pin
+			puts "Hello #{name}!"
 			@login = 1
 		end
 	end
 
-	def to_s
-		"#{name} your pin is #{pin} and you have a balance of #{balance}"
-	end
-
-	def deposit(amount)
+	def atm
 		if @login == 1
-			@balance = @balance + amount
-			puts "You have deposited #{amount} dollars"
-			puts "#{name} your new balance is #{@balance} dollars"
-		else
-			puts "Please log in first"
-		end	
-	end
+			while cmd != "e" do
+				puts "Would you like to (w)ithdraw, (d)eposit or (c)heck your balance?"
+				puts "You can also (e)nd your session."
+				cmd = gets.chomp
 
-	def withdraw(amount)
-		if @login == 1
-			@balance = @balance - amount
-			puts "#{name} you have withdrawn #{amount} dollars."
-			puts "Your new balance is #{@balance} dollars"
+			case cmd
+			when "w"
+			  puts "How much would you like to withdraw?"
+			  amount = gets.chomp
+			  account.withdraw(amount)
+			 when "d"
+			 	puts "How much would you like to deposit?"
+		 	 	amount = gets.chomp
+		 	 	account.deposit(amount)
+			when "c"
+		 		puts "Your balance is $%.2f\n" % account.balance
+			else
+		  	puts "Didn't understand your command. Try again." unless cmd == "e"
+			end
+
+		end
 		else
-			puts "Please log in first"
+			puts "Not logged in"
 		end
 	end
-	
+		
 
 end
